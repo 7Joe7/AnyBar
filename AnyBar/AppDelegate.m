@@ -39,14 +39,24 @@
     }
     @finally {
         NSString *flowTitle = [NSString stringWithFormat:@"Title: %@", _flowTitle];
-        NSString *portTitle = [NSString stringWithFormat:@"UDP port: %@",
-                               _udpPort >= 0 ? [NSNumber numberWithInt:_udpPort] : @"unavailable"];
+        NSString *portTitle = [NSString stringWithFormat:@"UDP port: %@", _udpPort >= 0 ? [NSNumber numberWithInt:_udpPort] : @"unavailable"];
         NSString *quitTitle = @"Quit";
-        _statusItem.menu = [self initializeStatusBarMenu:@{
-                                                           flowTitle: [NSValue valueWithPointer:nil],
-                                                           portTitle: [NSValue valueWithPointer:nil],
-                                                           quitTitle: [NSValue valueWithPointer:@selector(terminate:)]
-                                                           }];
+        
+        NSMenu *menu = [[NSMenu alloc] init];
+        
+        SEL action = nil;
+        [[NSValue valueWithPointer:nil] getValue:&action];
+        [menu addItemWithTitle:flowTitle action:action keyEquivalent:@""];
+        
+        SEL actionTwo = nil;
+        [[NSValue valueWithPointer:nil] getValue:&actionTwo];
+        [menu addItemWithTitle:portTitle action:actionTwo keyEquivalent:@""];
+        
+        SEL actionThree = nil;
+        [[NSValue valueWithPointer:@selector(terminate:)] getValue:&actionThree];
+        [menu addItemWithTitle:quitTitle action:actionThree keyEquivalent:@""];
+        
+        _statusItem.menu = menu;
     }
 
     NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
@@ -178,18 +188,6 @@
     statusItem.alternateImage = [NSImage imageNamed:@"black_alt@2x.png"];
     statusItem.highlightMode = YES;
     return statusItem;
-}
-
--(NSMenu*) initializeStatusBarMenu:(NSDictionary*)menuDictionary {
-    NSMenu *menu = [[NSMenu alloc] init];
-
-    [menuDictionary enumerateKeysAndObjectsUsingBlock:^(NSString* key, NSValue* val, BOOL *stop) {
-        SEL action = nil;
-        [val getValue:&action];
-        [menu addItemWithTitle:key action:action keyEquivalent:@""];
-    }];
-
-    return menu;
 }
 
 -(NSString*) readStringFromEnvironmentVariable:(NSString*)envVariable usingDefault:(NSString*)defStr {
