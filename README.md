@@ -2,7 +2,7 @@
 
 AnyBar is a small indicator for your menubar that does one simple thing: it displays color dot. What color means is up to you. When to change color is also up to you.
 
-<img src="AnyBar/Resources/screenshot.png?raw=true" />
+<img src="AnyBar/Resources/screenshot-0.1.4-J.png?raw=true" />
 
 ## Download
 
