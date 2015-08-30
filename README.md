@@ -6,13 +6,11 @@ AnyBar is a small indicator for your menubar that does one simple thing: it disp
 
 ## Download
 
-Version 0.1.3:
+Version 0.1.4-J:
 
-<a href="https://github.com/tonsky/AnyBar/releases/download/0.1.3/AnyBar-0.1.3.zip"><img src="AnyBar/Images.xcassets/AppIcon.appiconset/icon_128x128@2x.png?raw=true" style="width: 128px;" width=128/></a>
+<a href="https://github.com/7Joe7/AnyBar/releases/download/0.1.4-J/AnyBar.app.zip"><img src="AnyBar/Images.xcassets/AppIcon.appiconset/icon_128x128@2x.png?raw=true" style="width: 128px;" width=128/></a>
 
-Or using [Homebrew-cask](http://caskroom.io):
-
-    brew cask install anybar
+This version download is not supported through Homebrew-cask!
 
 ## Usage
 
@@ -140,8 +138,9 @@ AnyBar can use user-local images if you put them under `~/.AnyBar`. E.g. if you 
 
 ## Changelog
 
-### 0.1.4
+### 0.1.4-J
 
+- J in version label means modified version from the main branch
 - Support for title in menu after clicking on menu bar icon
 
 ### 0.1.3
