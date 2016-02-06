@@ -22,6 +22,34 @@
 
 @implementation AppDelegate
 
+NSImage* TintImage(NSImage *baseImage, CGFloat r, CGFloat g, CGFloat b)
+{
+    return [NSImage imageWithSize:NSMakeSize(19, 19) flipped:NO drawingHandler:^BOOL(NSRect dstRect) {
+        CGContextRef ctx = [NSGraphicsContext.currentContext CGContext];
+        CGContextSetRGBFillColor(ctx, r, g, b, 1);
+        CGContextSetBlendMode(ctx, kCGBlendModeSourceAtop);
+        [baseImage drawInRect:dstRect];
+        CGContextFillRect(ctx, dstRect);
+        return YES;
+    }];
+}
+
+- (NSImage *)dotForHex:(NSString *)hexStr
+{
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"#[0-9a-fA-F]{6}" options:0 error:NULL];
+        NSTextCheckingResult *match = [regex firstMatchInString:hexStr options:0 range:NSMakeRange(0, [hexStr length])];
+    if (match) {
+        UInt32 hexInt = 0;
+        NSScanner *scanner = [NSScanner scannerWithString:[hexStr substringFromIndex:1]];
+        [scanner scanHexInt:&hexInt];
+        CGFloat r = ((CGFloat)((hexInt & 0xFF0000) >> 16))/255;
+        CGFloat g = ((CGFloat)((hexInt & 0x00FF00) >>  8))/255;
+        CGFloat b = ((CGFloat)((hexInt & 0x0000FF)      ))/255;
+        return TintImage([NSImage imageNamed:@"black"], r, g, b);
+    }
+    return nil;
+}
+
 -(void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     _flowTitle = [self readStringFromEnvironmentVariable:@"ANYBAR_TITLE" usingDefault:@"unavailable"];
     _udpPort = -1;
@@ -161,6 +189,8 @@
         image = [self tryImage:[self homedirImagePath:[name stringByAppendingString:@"@2x"]]];
     if (!image)
         image = [self tryImage:[self homedirImagePath:name]];
+    if (!image)
+        image = [self dotForHex:name];
     if (!image) {
         if (_dark)
             image = [self tryImage:[self bundledImagePath:@"question_alt@2x"]];

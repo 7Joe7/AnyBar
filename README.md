@@ -2,13 +2,13 @@
 
 AnyBar is a small indicator for your menubar that does one simple thing: it displays color dot. What color means is up to you. When to change color is also up to you.
 
-<img src="AnyBar/Resources/screenshot-0.1.4-J.png?raw=true" />
+<img src="AnyBar/Resources/screenshot-0.1.5-J.png?raw=true" />
 
 ## Download
 
-Version 0.1.4-J:
+Version 0.1.5-J:
 
-<a href="https://github.com/7Joe7/AnyBar/releases/download/0.1.4-J/AnyBar.app.zip"><img src="AnyBar/Images.xcassets/AppIcon.appiconset/icon_128x128@2x.png?raw=true" style="width: 128px;" width=128/></a>
+<a href="https://github.com/7Joe7/AnyBar/releases/download/0.1.5-J/AnyBar.app.zip"><img src="AnyBar/Images.xcassets/AppIcon.appiconset/icon_128x128@2x.png?raw=true" style="width: 128px;" width=128/></a>
 
 This version download is not supported through Homebrew-cask!
 
@@ -41,6 +41,8 @@ Following commands change color:
 <img src="AnyBar/Resources/question@2x.png?raw=true" width=19 /> `question`  
 <img src="AnyBar/Resources/exclamation@2x.png?raw=true" width=19 /> `exclamation`  
 
+Custom colour support is available send a message in format: `#ffcc33`
+
 And one special command forces AnyBar to quit: `quit`
 
 ## Alternative clients
@@ -52,6 +54,7 @@ $ function anybar { echo -n $1 | nc -4u -w0 localhost ${2:-1738}; }
 
 $ anybar red
 $ anybar green 1739
+$ anybar #ccff33
 ```
 
 Go:
@@ -137,6 +140,10 @@ AnyBar can use user-local images if you put them under `~/.AnyBar`. E.g. if you 
 - Ubuntu Unity [limpbrains/somebar](https://github.com/limpbrains/somebar)
 
 ## Changelog
+
+### 0.1.5-J
+
+- Support for custom colours
 
 ### 0.1.4-J
 
