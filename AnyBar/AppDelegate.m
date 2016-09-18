@@ -13,9 +13,11 @@
 @property (weak, nonatomic) IBOutlet NSWindow *window;
 @property (strong, nonatomic) NSStatusItem *statusItem;
 @property (strong, nonatomic) GCDAsyncUdpSocket *udpSocket;
+@property (assign, nonatomic) GCDAsyncUdpSocket *udpSendSocket;
 @property (strong, nonatomic) NSString *imageName;
 @property (assign, nonatomic) BOOL dark;
 @property (assign, nonatomic) int udpPort;
+@property (assign, nonatomic) int udpResponsePort;
 @property (assign, nonatomic) NSString *flowTitle;
 
 @end
@@ -58,7 +60,7 @@ NSImage* TintImage(NSImage *baseImage, CGFloat r, CGFloat g, CGFloat b)
     [self refreshDarkMode];
 
     @try {
-        _udpPort = [self getUdpPort];
+        _udpPort = [self getUdpPort:@"ANYBAR_PORT" withDefault:@"1738"];
         _udpSocket = [self initializeUdpSocket: _udpPort];
     }
     @catch(NSException *ex) {
@@ -102,8 +104,8 @@ NSImage* TintImage(NSImage *baseImage, CGFloat r, CGFloat g, CGFloat b)
     _statusItem = nil;
 }
 
--(int) getUdpPort {
-    int port = [self readIntFromEnvironmentVariable:@"ANYBAR_PORT" usingDefault:@"1738"];
+-(int) getUdpPort:(NSString*)variableName withDefault:(NSString*)defaultPort {
+    int port = [self readIntFromEnvironmentVariable:variableName usingDefault:defaultPort];
 
     if (port < 0 || port > 65535) {
         @throw([NSException exceptionWithName:@"Argument Exception"
@@ -174,6 +176,16 @@ NSImage* TintImage(NSImage *baseImage, CGFloat r, CGFloat g, CGFloat b)
     return [NSString stringWithFormat:@"%@/%@/%@.png", NSHomeDirectory(), @".AnyBar", name];
 }
 
+-(void)respond {
+    int udpResponseSocket = [self getUdpPort:@"ANYBAR_RESPONSE_PORT" withDefault:@"3500"];
+    GCDAsyncUdpSocket *udpSendSocket = [[GCDAsyncUdpSocket alloc]
+                                    initWithDelegate:self
+                                    delegateQueue:dispatch_get_main_queue()];
+    NSData *data = [[NSString stringWithFormat:@"Hello"] dataUsingEncoding:NSUTF8StringEncoding];
+                    
+    [udpSendSocket sendData:data toHost:@"localhost" port:udpResponseSocket withTimeout:-1 tag:1];
+}
+
 -(void)setImage:(NSString*) name {
 
     NSImage *image = nil;
@@ -206,9 +218,10 @@ NSImage* TintImage(NSImage *baseImage, CGFloat r, CGFloat g, CGFloat b)
 -(void)processUdpSocketMsg:(GCDAsyncUdpSocket *)sock withData:(NSData *)data
     fromAddress:(NSData *)address {
     NSString *msg = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
     if ([msg isEqualToString:@"quit"])
         [[NSApplication sharedApplication] terminate:nil];
+    else if ([msg isEqualToString:@"ping"])
+        [self respond];
     else
         [self setImage:msg];
 }
