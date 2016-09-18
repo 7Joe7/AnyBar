@@ -6,9 +6,9 @@ AnyBar is a small indicator for your menubar that does one simple thing: it disp
 
 ## Download
 
-Version 0.1.5-J:
+Version 0.1.6-J:
 
-<a href="https://github.com/7Joe7/AnyBar/releases/download/0.1.5-J/AnyBar.app.zip"><img src="AnyBar/Images.xcassets/AppIcon.appiconset/icon_128x128@2x.png?raw=true" style="width: 128px;" width=128/></a>
+<a href="https://github.com/7Joe7/AnyBar/releases/download/0.1.6-J/AnyBar.app.zip"><img src="AnyBar/Images.xcassets/AppIcon.appiconset/icon_128x128@2x.png?raw=true" style="width: 128px;" width=128/></a>
 
 This version download is not supported through Homebrew-cask!
 
@@ -42,6 +42,8 @@ Following commands change color:
 <img src="AnyBar/Resources/exclamation@2x.png?raw=true" width=19 /> `exclamation`  
 
 Custom colour support is available send a message in format: `#ffcc33`
+
+One command for receiving a response to localhost:3500: `ping`
 
 And one special command forces AnyBar to quit: `quit`
 
@@ -131,6 +133,12 @@ ANYBAR_PORT=1739 ANYBAR_TITLE="Something else here" open -n ./AnyBar.app
 ANYBAR_PORT=1740 ANYBAR_TITLE="Yet another title" open -n ./AnyBar.app
 ```
 
+You may specify port to which AnyBar will respond when pinged.
+
+```sh
+ANYBAR_RESPONSE_PORT=5432 ANYBAR_PORT=1738 ANYBAR_TITLE="This will be shown" open -n ./AnyBar.app
+```
+
 ## Custom images
 
 AnyBar can use user-local images if you put them under `~/.AnyBar`. E.g. if you have `~/.AnyBar/square@2x.png` present, send `square` to 1738 and it will be displayed. Images should be 19×19px (or twice that for retina).
@@ -140,6 +148,10 @@ AnyBar can use user-local images if you put them under `~/.AnyBar`. E.g. if you 
 - Ubuntu Unity [limpbrains/somebar](https://github.com/limpbrains/somebar)
 
 ## Changelog
+
+### 0.1.6-J
+
+- Add ping command
 
 ### 0.1.5-J
 
